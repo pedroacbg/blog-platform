@@ -36,6 +36,10 @@ public class Post implements Serializable {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
+
     public Post() {
     }
 

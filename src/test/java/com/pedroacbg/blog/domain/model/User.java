@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -27,6 +29,9 @@ public class User implements Serializable {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
 
     public User() {
     }
