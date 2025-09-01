@@ -14,4 +14,4 @@ spring:
     show-sql: true
     open-in-view: false
 jwt:
-  secret: vou-trocar-depois-xd
+  secret: vou-trocar-depois-quando-for-subir-a-aplicacao-xd

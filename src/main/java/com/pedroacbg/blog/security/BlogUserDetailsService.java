@@ -12,6 +12,10 @@ public class BlogUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    public BlogUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
