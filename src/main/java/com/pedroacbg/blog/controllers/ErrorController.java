@@ -30,7 +30,7 @@ public class ErrorController {
         ApiErrorResponse error = new ApiErrorResponse();
         error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.setMessage(ex.getMessage());
-        
+
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
