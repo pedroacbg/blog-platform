@@ -121,15 +121,39 @@ public class Post implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Post post)) return false;
-        return Objects.equals(getId(), post.getId()) && Objects.equals(getTitle(), post.getTitle()) && Objects.equals(getContent(), post.getContent()) && getStatus() == post.getStatus() && Objects.equals(getReadingTime(), post.getReadingTime()) && Objects.equals(getCreatedAt(), post.getCreatedAt()) && Objects.equals(getUpdatedAt(), post.getUpdatedAt());
+        return Objects.equals(getId(), post.getId()) && Objects.equals(getTitle(), post.getTitle()) && Objects.equals(getContent(), post.getContent()) && getStatus() == post.getStatus() && Objects.equals(getReadingTime(), post.getReadingTime()) && Objects.equals(getCreatedAt(), post.getCreatedAt()) && Objects.equals(getUpdatedAt(), post.getUpdatedAt()) && Objects.equals(getAuthor(), post.getAuthor()) && Objects.equals(getCategory(), post.getCategory()) && Objects.equals(getTags(), post.getTags());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getTitle(), getContent(), getStatus(), getReadingTime(), getCreatedAt(), getUpdatedAt());
+        return Objects.hash(getId(), getTitle(), getContent(), getStatus(), getReadingTime(), getCreatedAt(), getUpdatedAt(), getAuthor(), getCategory(), getTags());
     }
 
     @PrePersist

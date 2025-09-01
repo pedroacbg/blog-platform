@@ -47,14 +47,22 @@ public class Tag implements Serializable {
         this.id = id;
     }
 
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Tag tag)) return false;
-        return Objects.equals(getId(), tag.getId()) && Objects.equals(getName(), tag.getName());
+        return Objects.equals(getId(), tag.getId()) && Objects.equals(getName(), tag.getName()) && Objects.equals(getPosts(), tag.getPosts());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName());
+        return Objects.hash(getId(), getName(), getPosts());
     }
 }

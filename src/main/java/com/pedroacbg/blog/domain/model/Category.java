@@ -47,14 +47,22 @@ public class Category implements Serializable {
         this.name = name;
     }
 
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Category category)) return false;
-        return Objects.equals(getId(), category.getId()) && Objects.equals(getName(), category.getName());
+        return Objects.equals(getId(), category.getId()) && Objects.equals(getName(), category.getName()) && Objects.equals(getPosts(), category.getPosts());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName());
+        return Objects.hash(getId(), getName(), getPosts());
     }
 }

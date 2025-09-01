@@ -84,15 +84,23 @@ public class User implements Serializable {
         this.createdAt = createdAt;
     }
 
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof User user)) return false;
-        return Objects.equals(getId(), user.getId()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getName(), user.getName()) && Objects.equals(getCreatedAt(), user.getCreatedAt());
+        return Objects.equals(getId(), user.getId()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getName(), user.getName()) && Objects.equals(getCreatedAt(), user.getCreatedAt()) && Objects.equals(getPosts(), user.getPosts());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getEmail(), getPassword(), getName(), getCreatedAt());
+        return Objects.hash(getId(), getEmail(), getPassword(), getName(), getCreatedAt(), getPosts());
     }
 
     @PrePersist
