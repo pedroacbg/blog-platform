@@ -37,4 +37,10 @@ public class CategoryController {
         return new ResponseEntity<>(categoryMapper.toDTO(savedCategory), HttpStatus.CREATED);
     }
 
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id){
+        categoryService.deleteCategory(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

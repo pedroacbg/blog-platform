@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -31,5 +32,19 @@ public class CategoryService {
         }
         logger.info("Criando a nova categoria...");
         return categoryRepository.save(category);
+    }
+
+    @Transactional
+    public void deleteCategory(Long id){
+        logger.info("Verificando se a categoria existe...");
+        Optional<Category> category = categoryRepository.findById(id);
+        logger.info("Verificando se a categoria tem posts associados...");
+        if(category.isPresent()){
+            if(!category.get().getPosts().isEmpty()){
+                throw new IllegalStateException("Categoria contém posts associados a ela");
+            }
+            logger.info("Excluindo categoria...");
+            categoryRepository.deleteById(id);
+        }
     }
 }
