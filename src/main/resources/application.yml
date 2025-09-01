@@ -1,3 +1,15 @@
 spring:
   application:
     name: blog
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/blog_platform?useTimezone=true&serverTimezone=UTC
+    username: docker
+    password: admin123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+    show-sql: true
+    open-in-view: false
