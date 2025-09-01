@@ -3,7 +3,9 @@ package com.pedroacbg.blog.domain.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tags")
@@ -17,6 +19,9 @@ public class Tag implements Serializable {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    @ManyToMany(mappedBy = "tags")
+    private Set<Post> posts = new HashSet<>();
 
     public Tag() {
     }
