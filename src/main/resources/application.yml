@@ -13,3 +13,5 @@ spring:
       hibernate:
     show-sql: true
     open-in-view: false
+jwt:
+  secret: vou-trocar-depois-xd
