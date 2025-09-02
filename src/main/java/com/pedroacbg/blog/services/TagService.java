@@ -51,4 +51,16 @@ public class TagService {
        return savedTags;
     }
 
+    @Transactional
+    public void deleteTag(Long id){
+        logger.info("Verificando se a tag contém posts associados...");
+        tagRepository.findById(id).ifPresent(tag -> {
+            if(!tag.getPosts().isEmpty()){
+                throw new IllegalStateException("Não é possível deletar uma tag que contém posts associados.");
+            }
+            logger.info("Deletando a tag...");
+            tagRepository.deleteById(id);
+        });
+    }
+
 }
