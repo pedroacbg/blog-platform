@@ -4,6 +4,7 @@ import com.pedroacbg.blog.domain.PostStatus;
 import com.pedroacbg.blog.domain.model.Category;
 import com.pedroacbg.blog.domain.model.Post;
 import com.pedroacbg.blog.domain.model.Tag;
+import com.pedroacbg.blog.domain.model.User;
 import com.pedroacbg.blog.repositories.PostRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +54,11 @@ public class PostService {
 
         logger.info("Buscando posts...");
         return postRepository.findAllByStatus(PostStatus.PUBLICADO);
+    }
+
+    public List<Post> getDraftPosts(User user){
+        logger.info("Buscando rascunhos...");
+        return postRepository.findAllByAuthorAndStatus(user, PostStatus.RASCUNHO);
     }
 
 }
