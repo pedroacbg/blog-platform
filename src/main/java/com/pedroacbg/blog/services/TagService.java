@@ -2,6 +2,7 @@ package com.pedroacbg.blog.services;
 
 import com.pedroacbg.blog.domain.model.Tag;
 import com.pedroacbg.blog.repositories.TagRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,12 @@ public class TagService {
     public List<Tag> getTags(){
         logger.info("Listando todas as tags...");
         return tagRepository.findAllWithPostCount();
+    }
+
+    public Tag getTagById(Long id){
+        logger.info("Buscando tag por id...");
+        return tagRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhuma tag encontrada com este id "+ id));
     }
 
     @Transactional

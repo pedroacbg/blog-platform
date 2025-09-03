@@ -1,6 +1,7 @@
 package com.pedroacbg.blog.controllers;
 
 import com.pedroacbg.blog.domain.dto.ApiErrorResponse;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,16 @@ public class ErrorController {
         error.setMessage("Email ou senha incorretos");
 
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleEntityNotFoundException(EntityNotFoundException ex){
+        logger.error("Exceção capturada", ex);
+        ApiErrorResponse error = new ApiErrorResponse();
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setMessage(ex.getMessage());
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
 }

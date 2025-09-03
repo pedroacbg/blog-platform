@@ -2,6 +2,7 @@ package com.pedroacbg.blog.services;
 
 import com.pedroacbg.blog.domain.model.Category;
 import com.pedroacbg.blog.repositories.CategoryRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,12 @@ public class CategoryService {
     public List<Category> listCategories(){
         logger.info("Listando todas as categorias...");
         return categoryRepository.findAllWithPostCount();
+    }
+
+    public Category getCategoryById(Long id){
+        logger.info("Buscando categoria por id...");
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhuma categoria encontrada com este id " + id));
     }
 
     @Transactional
