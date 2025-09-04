@@ -1,5 +1,7 @@
 package com.pedroacbg.blog.controllers;
 
+import com.pedroacbg.blog.domain.CreatePostRequest;
+import com.pedroacbg.blog.domain.dto.CreatePostRequestDTO;
 import com.pedroacbg.blog.domain.dto.PostDTO;
 import com.pedroacbg.blog.domain.model.Post;
 import com.pedroacbg.blog.domain.model.User;
@@ -7,9 +9,11 @@ import com.pedroacbg.blog.mappers.PostMapper;
 import com.pedroacbg.blog.services.PostService;
 import com.pedroacbg.blog.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -38,6 +42,15 @@ public class PostController {
         List<Post> draftPosts = postService.getDraftPosts(loggedInUser);
         List<PostDTO> postDTOS = draftPosts.stream().map(post -> postMapper.toDTO(post)).toList();
         return ResponseEntity.ok(postDTOS);
+    }
+
+    @PostMapping
+    public ResponseEntity<PostDTO> createPost(@RequestBody CreatePostRequestDTO request, @RequestAttribute Long userId){
+        User loggedInUser = userService.getUserById(userId);
+        CreatePostRequest createPostRequest = postMapper.toCreatePostRequest(request);
+        Post createdPost = postService.createPost(loggedInUser, createPostRequest);
+        PostDTO createdPostDTO = postMapper.toDTO(createdPost);
+        return new ResponseEntity<>(createdPostDTO, HttpStatus.CREATED);
     }
 
 }

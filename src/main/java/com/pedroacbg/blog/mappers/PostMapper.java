@@ -1,5 +1,7 @@
 package com.pedroacbg.blog.mappers;
 
+import com.pedroacbg.blog.domain.CreatePostRequest;
+import com.pedroacbg.blog.domain.dto.CreatePostRequestDTO;
 import com.pedroacbg.blog.domain.dto.PostDTO;
 import com.pedroacbg.blog.domain.model.Post;
 import org.mapstruct.Mapper;
@@ -13,4 +15,6 @@ public interface PostMapper {
     @Mapping(target = "category", source = "category")
     @Mapping(target = "tags", source = "tags")
     PostDTO toDTO(Post post);
+
+    CreatePostRequest toCreatePostRequest(CreatePostRequestDTO dto);
 }

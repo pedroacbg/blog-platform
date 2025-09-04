@@ -14,7 +14,7 @@ public class PostDTO {
     private AuthorDTO author;
     private CategoryDTO category;
     private Set<TagResponse> tags;
-    private Integer readingtime;
+    private Integer readingTime;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private PostStatus postStatus;
@@ -22,14 +22,14 @@ public class PostDTO {
     public PostDTO() {
     }
 
-    public PostDTO(Long id, String title, String content, AuthorDTO author, CategoryDTO category, Set<TagResponse> tags, Integer readingtime, LocalDateTime createdAt, LocalDateTime updatedAt, PostStatus postStatus) {
+    public PostDTO(Long id, String title, String content, AuthorDTO author, CategoryDTO category, Set<TagResponse> tags, Integer readingTime, LocalDateTime createdAt, LocalDateTime updatedAt, PostStatus postStatus) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.author = author;
         this.category = category;
         this.tags = tags;
-        this.readingtime = readingtime;
+        this.readingTime = readingTime;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.postStatus = postStatus;
@@ -83,12 +83,12 @@ public class PostDTO {
         this.tags = tags;
     }
 
-    public Integer getReadingtime() {
-        return readingtime;
+    public Integer getReadingTime() {
+        return readingTime;
     }
 
-    public void setReadingtime(Integer readingtime) {
-        this.readingtime = readingtime;
+    public void setReadingTime(Integer readingTime) {
+        this.readingTime = readingTime;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -118,11 +118,11 @@ public class PostDTO {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof PostDTO postDTO)) return false;
-        return Objects.equals(getId(), postDTO.getId()) && Objects.equals(getTitle(), postDTO.getTitle()) && Objects.equals(getContent(), postDTO.getContent()) && Objects.equals(getAuthor(), postDTO.getAuthor()) && Objects.equals(getCategory(), postDTO.getCategory()) && Objects.equals(getTags(), postDTO.getTags()) && Objects.equals(getReadingtime(), postDTO.getReadingtime()) && Objects.equals(getCreatedAt(), postDTO.getCreatedAt()) && Objects.equals(getUpdatedAt(), postDTO.getUpdatedAt()) && getPostStatus() == postDTO.getPostStatus();
+        return Objects.equals(getId(), postDTO.getId()) && Objects.equals(getTitle(), postDTO.getTitle()) && Objects.equals(getContent(), postDTO.getContent()) && Objects.equals(getAuthor(), postDTO.getAuthor()) && Objects.equals(getCategory(), postDTO.getCategory()) && Objects.equals(getTags(), postDTO.getTags()) && Objects.equals(getReadingTime(), postDTO.getReadingTime()) && Objects.equals(getCreatedAt(), postDTO.getCreatedAt()) && Objects.equals(getUpdatedAt(), postDTO.getUpdatedAt()) && getPostStatus() == postDTO.getPostStatus();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getTitle(), getContent(), getAuthor(), getCategory(), getTags(), getReadingtime(), getCreatedAt(), getUpdatedAt(), getPostStatus());
+        return Objects.hash(getId(), getTitle(), getContent(), getAuthor(), getCategory(), getTags(), getReadingTime(), getCreatedAt(), getUpdatedAt(), getPostStatus());
     }
 }

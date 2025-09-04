@@ -58,11 +58,11 @@ public class Tag implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Tag tag)) return false;
-        return Objects.equals(getId(), tag.getId()) && Objects.equals(getName(), tag.getName()) && Objects.equals(getPosts(), tag.getPosts());
+        return Objects.equals(getId(), tag.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getPosts());
+        return Objects.hashCode(getId());
     }
 }

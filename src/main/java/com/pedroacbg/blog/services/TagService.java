@@ -34,6 +34,15 @@ public class TagService {
                 .orElseThrow(() -> new EntityNotFoundException("Nenhuma tag encontrada com este id "+ id));
     }
 
+    public List<Tag> getTagByIds(Set<Long> ids){
+        logger.info("Buscando Tags por IDs...");
+        List<Tag> foundTags = tagRepository.findAllById(ids);
+        if(foundTags.size() != ids.size()){
+            throw new EntityNotFoundException("Nem todos os IDs de tag especificados existem");
+        }
+        return foundTags;
+    }
+
     @Transactional
     public List<Tag> createTags(Set<String> tagNames){
         logger.info("Criando uma ou mais tags...");
