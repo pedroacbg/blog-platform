@@ -41,6 +41,8 @@ public class PostController {
         User loggedInUser = userService.getUserById(userId);
         List<Post> draftPosts = postService.getDraftPosts(loggedInUser);
         List<PostDTO> postDTOS = draftPosts.stream().map(post -> postMapper.toDTO(post)).toList();
+        var times = postDTOS.stream().map(draft -> draft.getReadingTime());
+        times.forEach(x -> System.out.println(x));
         return ResponseEntity.ok(postDTOS);
     }
 
