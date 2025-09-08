@@ -1,13 +1,16 @@
 package com.pedroacbg.blog.controllers;
 
 import com.pedroacbg.blog.domain.CreatePostRequest;
+import com.pedroacbg.blog.domain.UpdatePostRequest;
 import com.pedroacbg.blog.domain.dto.CreatePostRequestDTO;
 import com.pedroacbg.blog.domain.dto.PostDTO;
+import com.pedroacbg.blog.domain.dto.UpdatePostRequestDTO;
 import com.pedroacbg.blog.domain.model.Post;
 import com.pedroacbg.blog.domain.model.User;
 import com.pedroacbg.blog.mappers.PostMapper;
 import com.pedroacbg.blog.services.PostService;
 import com.pedroacbg.blog.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,12 +50,20 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<PostDTO> createPost(@RequestBody CreatePostRequestDTO request, @RequestAttribute Long userId){
+    public ResponseEntity<PostDTO> createPost(@Valid@RequestBody CreatePostRequestDTO request, @RequestAttribute Long userId){
         User loggedInUser = userService.getUserById(userId);
         CreatePostRequest createPostRequest = postMapper.toCreatePostRequest(request);
         Post createdPost = postService.createPost(loggedInUser, createPostRequest);
         PostDTO createdPostDTO = postMapper.toDTO(createdPost);
         return new ResponseEntity<>(createdPostDTO, HttpStatus.CREATED);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<PostDTO> updatePost(@PathVariable Long id, @Valid @RequestBody UpdatePostRequestDTO updatePostRequestDTO){
+        UpdatePostRequest updatePostRequest = postMapper.toUpdatePostRequest(updatePostRequestDTO);
+        Post updatedPost = postService.updatePost(id, updatePostRequest);
+        PostDTO updatedPostDTO = postMapper.toDTO(updatedPost);
+        return ResponseEntity.ok(updatedPostDTO);
     }
 
 }

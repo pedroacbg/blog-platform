@@ -95,12 +95,12 @@ public class User implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof User user)) return false;
-        return Objects.equals(getId(), user.getId()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getName(), user.getName()) && Objects.equals(getCreatedAt(), user.getCreatedAt()) && Objects.equals(getPosts(), user.getPosts());
+        return Objects.equals(getId(), user.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getEmail(), getPassword(), getName(), getCreatedAt(), getPosts());
+        return Objects.hashCode(getId());
     }
 
     @PrePersist

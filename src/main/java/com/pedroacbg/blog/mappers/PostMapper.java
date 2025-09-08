@@ -1,8 +1,10 @@
 package com.pedroacbg.blog.mappers;
 
 import com.pedroacbg.blog.domain.CreatePostRequest;
+import com.pedroacbg.blog.domain.UpdatePostRequest;
 import com.pedroacbg.blog.domain.dto.CreatePostRequestDTO;
 import com.pedroacbg.blog.domain.dto.PostDTO;
+import com.pedroacbg.blog.domain.dto.UpdatePostRequestDTO;
 import com.pedroacbg.blog.domain.model.Post;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,4 +20,6 @@ public interface PostMapper {
     PostDTO toDTO(Post post);
 
     CreatePostRequest toCreatePostRequest(CreatePostRequestDTO dto);
+
+    UpdatePostRequest toUpdatePostRequest(UpdatePostRequestDTO dto);
 }

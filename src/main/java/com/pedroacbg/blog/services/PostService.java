@@ -2,11 +2,13 @@ package com.pedroacbg.blog.services;
 
 import com.pedroacbg.blog.domain.CreatePostRequest;
 import com.pedroacbg.blog.domain.PostStatus;
+import com.pedroacbg.blog.domain.UpdatePostRequest;
 import com.pedroacbg.blog.domain.model.Category;
 import com.pedroacbg.blog.domain.model.Post;
 import com.pedroacbg.blog.domain.model.Tag;
 import com.pedroacbg.blog.domain.model.User;
 import com.pedroacbg.blog.repositories.PostRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -88,6 +91,38 @@ public class PostService {
 
         logger.info("Salvando o novo post no banco de dados...");
         return postRepository.save(newPost);
+    }
+
+    @Transactional
+    public Post updatePost(Long id, UpdatePostRequest updatePostRequest){
+        logger.info("Verificando se o post existe...");
+        Post existingPost = postRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum post encontrado com o id " + id));
+
+        String content = updatePostRequest.getContent();
+
+        existingPost.setTitle(updatePostRequest.getTitle());
+        existingPost.setContent(content);
+        existingPost.setStatus(updatePostRequest.getStatus());
+        existingPost.setReadingTime(calculateReadingTime(content));
+
+        logger.info("Verificando se a categoria está sendo atualizada...");
+        Long updatePostRequestCategoryId = updatePostRequest.getCategoryId();
+        if(!existingPost.getCategory().getId().equals(updatePostRequestCategoryId)){
+            Category newCategory = categoryService.getCategoryById(updatePostRequestCategoryId);
+            existingPost.setCategory(newCategory);
+        }
+
+        logger.info("Verificando se as tags estão sendo atualizadas...");
+        Set<Long> existingTagIds = existingPost.getTags().stream().map(tag -> tag.getId()).collect(Collectors.toSet());
+        Set<Long> updatePostRequestTagsId = updatePostRequest.getTagsId();
+        if(!existingTagIds.equals(updatePostRequestTagsId)){
+            List<Tag> newTags = tagService.getTagByIds(updatePostRequestTagsId);
+            existingPost.setTags(new HashSet<>(newTags));
+        }
+
+        logger.info("Salvando a atualização no banco de dados...");
+        return postRepository.save(existingPost);
     }
 
     private Integer calculateReadingTime(String content){
