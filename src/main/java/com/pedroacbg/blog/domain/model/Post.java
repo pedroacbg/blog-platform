@@ -148,12 +148,12 @@ public class Post implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Post post)) return false;
-        return Objects.equals(getId(), post.getId());
+        return Objects.equals(getId(), post.getId()) && Objects.equals(getTitle(), post.getTitle()) && Objects.equals(getContent(), post.getContent()) && getStatus() == post.getStatus() && Objects.equals(getReadingTime(), post.getReadingTime()) && Objects.equals(getCreatedAt(), post.getCreatedAt()) && Objects.equals(getUpdatedAt(), post.getUpdatedAt()) && Objects.equals(getAuthor(), post.getAuthor()) && Objects.equals(getCategory(), post.getCategory()) && Objects.equals(getTags(), post.getTags());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hash(getId(), getTitle(), getContent(), getStatus(), getReadingTime(), getCreatedAt(), getUpdatedAt(), getAuthor(), getCategory(), getTags());
     }
 
     @PrePersist

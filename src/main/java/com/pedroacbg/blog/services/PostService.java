@@ -12,6 +12,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +66,11 @@ public class PostService {
         return postRepository.findAllByStatus(PostStatus.PUBLICADO);
     }
 
+    @Transactional
+    public Post getPost(Long id){
+        return postRepository.findByIdWithAuthor(id).orElseThrow(() -> new EntityNotFoundException("Nenhum post encontrado com este ID " + id));
+    }
+
     @Transactional(readOnly = true)
     public List<Post> getDraftPosts(User user){
         logger.info("Buscando rascunhos...");
@@ -96,11 +103,17 @@ public class PostService {
     @Transactional
     public Post updatePost(Long id, UpdatePostRequest updatePostRequest){
         logger.info("Verificando se o post existe...");
-        Post existingPost = postRepository.findById(id)
+        Post existingPost = postRepository.findByIdWithAuthor(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum post encontrado com o id " + id));
 
-        String content = updatePostRequest.getContent();
+        logger.info("Verificando se o post é do usuário logado...");
+        String authenticatedUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        if (!existingPost.getAuthor().getEmail().equals(authenticatedUsername)) {
+            throw new AccessDeniedException("Você não tem permissão para atualizar este post");
+        }
+
+        String content = updatePostRequest.getContent();
         existingPost.setTitle(updatePostRequest.getTitle());
         existingPost.setContent(content);
         existingPost.setStatus(updatePostRequest.getStatus());

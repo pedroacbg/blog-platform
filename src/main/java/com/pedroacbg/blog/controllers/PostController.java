@@ -39,6 +39,13 @@ public class PostController {
         return ResponseEntity.ok(postsDTO);
     }
 
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<PostDTO> getPost(@PathVariable Long id){
+        Post post = postService.getPost(id);
+        PostDTO postDTO = postMapper.toDTO(post);
+        return ResponseEntity.ok(postDTO);
+    }
+
     @GetMapping(path = "/drafts")
     public ResponseEntity<List<PostDTO>> getDrafts(@RequestAttribute Long userId){
         User loggedInUser = userService.getUserById(userId);
