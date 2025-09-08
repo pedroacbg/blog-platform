@@ -68,6 +68,7 @@ public class PostService {
 
     @Transactional
     public Post getPost(Long id){
+        logger.info("Buscando post com o id informado...");
         return postRepository.findByIdWithAuthor(id).orElseThrow(() -> new EntityNotFoundException("Nenhum post encontrado com este ID " + id));
     }
 
@@ -136,6 +137,18 @@ public class PostService {
 
         logger.info("Salvando a atualização no banco de dados...");
         return postRepository.save(existingPost);
+    }
+
+    public void deletePost(Long id){
+        Post post = getPost(id);
+
+        logger.info("Verificando se o post é do usuário logado...");
+        String authenticatedUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        if (!post.getAuthor().getEmail().equals(authenticatedUsername)) {
+            throw new AccessDeniedException("Você não tem permissão para atualizar este post");
+        }
+        postRepository.delete(post);
     }
 
     private Integer calculateReadingTime(String content){
