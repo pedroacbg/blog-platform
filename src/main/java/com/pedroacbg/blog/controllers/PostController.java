@@ -1,5 +1,6 @@
 package com.pedroacbg.blog.controllers;
 
+import com.pedroacbg.blog.controllers.docs.PostControllerDocs;
 import com.pedroacbg.blog.domain.CreatePostRequest;
 import com.pedroacbg.blog.domain.UpdatePostRequest;
 import com.pedroacbg.blog.domain.dto.CreatePostRequestDTO;
@@ -10,18 +11,20 @@ import com.pedroacbg.blog.domain.model.User;
 import com.pedroacbg.blog.mappers.PostMapper;
 import com.pedroacbg.blog.services.PostService;
 import com.pedroacbg.blog.services.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/v1/posts")
-public class PostController {
+@Tag(name = "Posts", description = "Endpoint de controle de Posts")
+public class PostController implements PostControllerDocs {
 
     @Autowired
     private PostService postService;
@@ -32,21 +35,24 @@ public class PostController {
     @Autowired
     private PostMapper postMapper;
 
-    @GetMapping
+    @Override
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PostDTO>> getAllPosts(@RequestParam(required = false) Long categoryId, @RequestParam(required = false) Long tagId){
         List<Post> posts = postService.getAllPosts(categoryId, tagId);
         List<PostDTO> postsDTO = posts.stream().map(post -> postMapper.toDTO(post)).toList();
         return ResponseEntity.ok(postsDTO);
     }
 
-    @GetMapping(path = "/{id}")
+    @Override
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PostDTO> getPost(@PathVariable Long id){
         Post post = postService.getPost(id);
         PostDTO postDTO = postMapper.toDTO(post);
         return ResponseEntity.ok(postDTO);
     }
 
-    @GetMapping(path = "/drafts")
+    @Override
+    @GetMapping(path = "/drafts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PostDTO>> getDrafts(@RequestAttribute Long userId){
         User loggedInUser = userService.getUserById(userId);
         List<Post> draftPosts = postService.getDraftPosts(loggedInUser);
@@ -56,8 +62,9 @@ public class PostController {
         return ResponseEntity.ok(postDTOS);
     }
 
-    @PostMapping
-    public ResponseEntity<PostDTO> createPost(@Valid@RequestBody CreatePostRequestDTO request, @RequestAttribute Long userId){
+    @Override
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PostDTO> createPost(@Valid @RequestBody CreatePostRequestDTO request, @RequestAttribute Long userId){
         User loggedInUser = userService.getUserById(userId);
         CreatePostRequest createPostRequest = postMapper.toCreatePostRequest(request);
         Post createdPost = postService.createPost(loggedInUser, createPostRequest);
@@ -65,7 +72,8 @@ public class PostController {
         return new ResponseEntity<>(createdPostDTO, HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "/{id}")
+    @Override
+    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PostDTO> updatePost(@PathVariable Long id, @Valid @RequestBody UpdatePostRequestDTO updatePostRequestDTO){
         UpdatePostRequest updatePostRequest = postMapper.toUpdatePostRequest(updatePostRequestDTO);
         Post updatedPost = postService.updatePost(id, updatePostRequest);
@@ -73,6 +81,7 @@ public class PostController {
         return ResponseEntity.ok(updatedPostDTO);
     }
 
+    @Override
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id){
         postService.deletePost(id);

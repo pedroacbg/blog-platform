@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/v1/posts/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/tags/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated())
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

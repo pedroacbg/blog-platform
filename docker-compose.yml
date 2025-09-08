@@ -1,6 +1,6 @@
 services:
   db:
-    image: mysql:latest
+    image: mysql:9.4.0
     restart: always
     environment:
       TZ: America/Sao_Paulo
