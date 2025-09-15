@@ -1,14 +1,39 @@
 services:
   db:
     image: mysql:9.4.0
+    container_name: blog-db
     restart: always
     environment:
-      TZ: America/Sao_Paulo
-      MYSQL_ROOT_PASSWORD: admin123
-      MYSQL_USER: docker
-      MYSQL_PASSWORD: admin123
       MYSQL_DATABASE: blog_platform
+      MYSQL_USER: ${SPRING_DATASOURCE_USERNAME}
+      MYSQL_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - blog-network
+
+  app:
+    image: ${DOCKERHUB_USERNAME}/blog-platform:latest
+    container_name: blog-app
+    restart: always
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/blog_platform?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_JPA_DDL_AUTO: validate
+      SPRING_JPA_SHOW_SQL: false
+      JWT_SECRET: ${JWT_SECRET}
     ports:
-      - "3308:3306"
-    expose:
-      - 3306
+      - "8080:8080"
+    networks:
+      - blog-network
+
+volumes:
+  db_data:
+
+networks:
+  blog-network:
+    driver: bridge

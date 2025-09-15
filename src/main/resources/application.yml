@@ -3,18 +3,16 @@ spring:
     name: blog
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3308/blog_platform?useTimezone=true&serverTimezone=UTC
-    username: docker
-    password: admin123
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/blog_platform?useTimezone=true&serverTimezone=UTC}
+    username: ${SPRING_DATASOURCE_USERNAME:docker}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
   jpa:
     hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-    show-sql: true
+      ddl-auto: ${SPRING_JPA_DDL_AUTO:update}
+    show-sql: ${SPRING_JPA_SHOW_SQL:true}
     open-in-view: false
 jwt:
-  secret: vou-trocar-depois-quando-for-subir-a-aplicacao-xd
+  secret: ${JWT_SECRET:change-me-in-prod}
 spring-doc:
   paths-to-match: /api/v1/**
   swagger-ui:
