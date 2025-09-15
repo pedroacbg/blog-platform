@@ -45,19 +45,4 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  deploy-koyeb:
-    needs: [ build-and-push ]
-    runs-on: ubuntu-latest
-    environment: DEPLOY
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: koyeb-community/koyeb-actions@v2
-        with:
-          api_token: ${{ secrets.KOYEB_TOKEN }}
-
-      - run: |
-          APP_NAME="blog-platform-app"
-          SERVICE_NAME="blog-platform-service"
-          koyeb service redeploy "${APP_NAME}/${SERVICE_NAME}"
+ 
