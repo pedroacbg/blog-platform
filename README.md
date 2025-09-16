@@ -95,7 +95,7 @@ Execute o projeto com:
 **Usando [docker](https://www.docker.com/):**
 
 ```sh
-docker run -it {image_name}
+docker run -p 8080:8080 pedroacbg/blog-platform:latest
 ```
 **Usando [maven](https://maven.apache.org/):**
 
